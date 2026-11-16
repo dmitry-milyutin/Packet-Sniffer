@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>pcap analyzer</title></head>
+<body>
+
+<h1>Analyze a packet capture</h1>
+
+{% if error %}
+    <p><b>Could not read that file: {{ error }}</b></p>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p><input type="file" name="file" accept=".pcap,.pcapng,.cap" required></p>
+    <p><button type="submit">Analyze</button></p>
+</form>
+
+</body>
+</html>

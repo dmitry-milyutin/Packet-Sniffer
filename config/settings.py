@@ -17,7 +17,9 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+MAX_CAPTURE_BYTES = 50 * 1024 * 1024
+FILE_UPLOAD_MAX_MEMORY_SIZE = 2 * 1024 * 1024   # 2 MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = MAX_CAPTURE_BYTES + (5 * 1024 * 1024)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sniffer'
 ]
 
 MIDDLEWARE = [
@@ -120,13 +123,15 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-if DEBUG:
-    STATICFILES_DIRS = [
-        BASE_DIR/"static"
-    ]
 
-elif not DEBUG:
-    STATIC_ROOT = BASE_DIR/STATIC_URL
+if DEBUG:
+    STATICFILES_DIRS = [BASE_DIR / "static"]
+else:
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+    STATICFILES_DIRS = [BASE_DIR / "static"]
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

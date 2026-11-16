@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>{{ name }}</title></head>
+<body>
+
+<h1>{{ name }}</h1>
+<p>
+    {{ result.packets }} packets &middot;
+    {{ result.total_bytes|filesizeformat }} &middot;
+    {{ result.conversations|length }} conversations
+</p>
+
+<h2>Conversations</h2>
+<table border="1" cellpadding="5">
+    <tr>
+        <th align="left">A</th>
+        <th align="left">B</th>
+        <th align="left">Protocol</th>
+        <th align="right">Packets</th>
+        <th align="right">Bytes</th>
+    </tr>
+    {% for c in result.conversations %}
+    <tr>
+        <td>{{ c.a }}</td>
+        <td>{{ c.b }}</td>
+        <td>{{ c.proto }}</td>
+        <td align="right">{{ c.packets }}</td>
+        <td align="right">{{ c.bytes|filesizeformat }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Protocols</h2>
+<table border="1" cellpadding="5">
+    <tr><th align="left">Protocol</th><th align="right">Packets</th></tr>
+    {% for proto, count in result.protocols %}
+    <tr><td>{{ proto }}</td><td align="right">{{ count }}</td></tr>
+    {% endfor %}
+</table>
+
+<h2>DNS lookups</h2>
+{% if result.dns %}
+<table border="1" cellpadding="5">
+    <tr><th align="left">Domain</th><th align="right">Queries</th></tr>
+    {% for name, count in result.dns %}
+    <tr><td>{{ name }}</td><td align="right">{{ count }}</td></tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>None.</p>
+{% endif %}
+
+<p><a href="/">Analyze another</a></p>
+
+</body>
+</html>
