@@ -10,11 +10,34 @@
     {{ result.conversations|length }} conversations
 </p>
 
+<h2>Sites</h2>
+{% if result.sites %}
+<table border="1" cellpadding="5">
+    <tr>
+        <th align="left">Hostname</th>
+        <th align="right">Bytes</th>
+        <th align="right">Packets</th>
+        <th align="right">Connections</th>
+    </tr>
+    {% for s in result.sites %}
+    <tr>
+        <td>{{ s.host }}</td>
+        <td align="right">{{ s.bytes|filesizeformat }}</td>
+        <td align="right">{{ s.packets }}</td>
+        <td align="right">{{ s.connections }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No TLS handshakes with a server name in this capture.</p>
+{% endif %}
+
 <h2>Conversations</h2>
 <table border="1" cellpadding="5">
     <tr>
         <th align="left">A</th>
         <th align="left">B</th>
+        <th align="left">Host</th>
         <th align="left">Protocol</th>
         <th align="right">Packets</th>
         <th align="right">Bytes</th>
@@ -23,6 +46,7 @@
     <tr>
         <td>{{ c.a }}</td>
         <td>{{ c.b }}</td>
+        <td>{% if c.host %}{{ c.host }}{% else %}&ndash;{% endif %}</td>
         <td>{{ c.proto }}</td>
         <td align="right">{{ c.packets }}</td>
         <td align="right">{{ c.bytes|filesizeformat }}</td>
